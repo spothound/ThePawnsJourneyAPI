@@ -3,9 +3,9 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const MONGO_URI = process.env.DATABASE_URL;
+const DATABASE_URL = process.env.DATABASE_URL;
 
-mongoose.connect(MONGO_URI, {})
+mongoose.connect(DATABASE_URL, {})
   .then(() => {
     console.log('Connected to MongoDB');
   })

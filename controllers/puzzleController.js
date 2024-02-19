@@ -1,11 +1,30 @@
 const express = require('express');
 const router = express.Router();
 const Puzzle = require('../models/puzzle');
+const { sanitize_puzzles_limit, sanitize_rating_range } = require('../util/sanitize');
+// Available routes
+router.get('/', (req, res) => {
+  res.json({
+    availableRoutes: [
+      {
+        method: 'GET',
+        path: '/puzzles',
+        description: 'Get all puzzles, limited to 100'
+      },
+      {
+        method: 'GET',
+        path: '/puzzles/:id',
+        description: 'Get a single puzzle by ID'
+      }
+    ]
+  });
+});
 
 // Get all puzzles
 router.get('/puzzles', async (req, res) => {
   try {
-    const puzzles = await Puzzle.find().limit(100);
+    const limit = sanitize_puzzles_limit(req.query.limit);
+    const puzzles = await Puzzle.find().limit(limit);
     res.json(puzzles);
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' + error });
@@ -22,6 +41,23 @@ router.get('/puzzles/:id', async (req, res) => {
       return res.status(404).json({ error: 'Puzzle not found' });
     }
     res.json(puzzle);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' + error });
+  }
+});
+
+// Get puzzles in a specific rating range
+router.get('/puzzles/rating/:min/:max', async (req, res) => {
+  try {
+    const {min, max} = sanitize_rating_range(req.params.min, req.params.max);
+    const limit = sanitize_puzzles_limit(req.query.limit);
+    const puzzles = await Puzzle.find({
+      Rating: {
+        $gte: min,
+        $lte: max
+      },
+    }).limit(limit);
+    res.json(puzzles);
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' + error });
   }

@@ -8,6 +8,11 @@ router.get('/', (req, res) => {
     availableRoutes: [
       {
         method: 'GET',
+        path: '/',
+        description: 'Get available routes'
+      },
+      {
+        method: 'GET',
         path: '/puzzles',
         description: 'Get all puzzles, limited to 100'
       },
@@ -15,6 +20,11 @@ router.get('/', (req, res) => {
         method: 'GET',
         path: '/puzzles/:id',
         description: 'Get a single puzzle by ID'
+      },
+      {
+        method: 'GET',
+        path: '/puzzles/rating/:min/:max',
+        description: 'Get puzzles in a specific rating range'
       }
     ]
   });

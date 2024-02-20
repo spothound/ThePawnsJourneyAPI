@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Puzzle = require('../models/puzzle');
+const Puzzle = require('../models/Puzzle');
 const { sanitize_puzzles_limit, sanitize_rating_range } = require('../util/sanitize');
 // Available routes
 router.get('/', (req, res) => {

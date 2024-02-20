@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
       {
         method: 'GET',
         path: '/',
-        description: 'Get available routes'
+        description: 'Get available routes for the API'
       },
       {
         method: 'GET',

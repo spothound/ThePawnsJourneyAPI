@@ -61,12 +61,17 @@ router.get('/puzzles/rating/:min/:max', async (req, res) => {
   try {
     const {min, max} = sanitize_rating_range(req.params.min, req.params.max);
     const limit = sanitize_puzzles_limit(req.query.limit);
-    const puzzles = await Puzzle.find({
-      Rating: {
-        $gte: min,
-        $lte: max
+    const puzzles = await Puzzle.aggregate([
+      {
+        $match: {
+          Rating: {
+            $gte: min,
+            $lte: max
+          },
+        }
       },
-    }).limit(limit);
+      { $sample: { size: limit } }
+    ]);
     res.json(puzzles);
   } catch (error) {
     res.status(500).json({ error: 'Internal server error' + error });

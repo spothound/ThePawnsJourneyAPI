@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const puzzleController = require('./controllers/puzzleController');
 
@@ -10,6 +11,7 @@ const PORT = process.env.PORT || 3000;
 const DATABASE_URL = process.env.DATABASE_URL;
 
 
+app.use(cors());
 app.use('/', puzzleController);
 
 
@@ -17,9 +19,7 @@ app.use('/', puzzleController);
 const connectDB = async () => {
   try {
     const conn = await mongoose.connect(process.env.DATABASE_URL);
-    console.log(`MongoDB Connected: ${conn.connection.host}`);
   } catch (error) {
-    console.log(error);
     process.exit(1);
   }
 }

@@ -11,18 +11,21 @@ const PORT = process.env.PORT || 3000;
 const DATABASE_URL = process.env.DATABASE_URL;
 
 // Define allowed origins
-const allowedOrigins = ['http://localhost:8080', 'https://thepawnsjourney.live'];
+const allowedOrigins = ['https://thepawnsjourney.live'];
 
+// Function to check if origin is allowed
 const corsOptions = {
   origin: (origin, callback) => {
-    // Check if the request's origin is in the allowed list
-    if (allowedOrigins.includes(origin) || !origin) {
+    if (!origin) return callback(null, true); // Allow requests with no origin (e.g., server-to-server)
+
+    // Check if origin is allowed or is localhost
+    if (allowedOrigins.includes(origin) || origin.startsWith('http://localhost')) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
     }
   },
-  optionsSuccessStatus: 200
+  optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions)); // Apply CORS middleware globally

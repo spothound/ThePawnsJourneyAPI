@@ -25,16 +25,37 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 
-app.use(cors(corsOptions));
+app.use(cors(corsOptions)); // Apply CORS middleware globally
+app.use(express.json()); // Ensure the body parser middleware is included
+
 app.use('/', puzzleController);
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  if (err) {
+    console.error(err);
+    if (err.name === 'UnauthorizedError') {
+      res.status(401).send('Invalid token');
+    } else {
+      res.status(500).send('Something went wrong');
+    }
+  } else {
+    next();
+  }
+});
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.DATABASE_URL);
+    const conn = await mongoose.connect(DATABASE_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('MongoDB connected');
   } catch (error) {
+    console.error('Database connection error:', error);
     process.exit(1);
   }
-}
+};
 
 // Connect to the database before listening
 connectDB().then(() => {

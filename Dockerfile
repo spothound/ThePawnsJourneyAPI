@@ -29,7 +29,7 @@ COPY --link package.json pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # Copy application code
-COPY --link src .
+COPY --link src /app/src
 
 # Final stage for app image
 FROM base

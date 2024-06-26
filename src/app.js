@@ -19,7 +19,7 @@ const corsOptions = {
     if (!origin) return callback(null, true); // Allow requests with no origin (e.g., server-to-server)
 
     // Check if origin is allowed or is localhost
-    if (allowedOrigins.includes(origin) || origin.startsWith('http://localhost')) {
+    if (allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));

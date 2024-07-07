@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 3000;
 const DATABASE_URL = process.env.DATABASE_URL;
 
 // Define allowed origins
-const allowedOrigins = ['https://thepawnsjourney.live'];
+const allowedOrigins = ['https://thepawnsjourney.live', 'https://deploy-preview-*-thepawnsjourney.netlify.app'];
 
 // Function to check if origin is allowed
 const corsOptions = {
@@ -53,7 +53,6 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log('MongoDB connected');
   } catch (error) {
     console.error('Database connection error:', error);
     process.exit(1);

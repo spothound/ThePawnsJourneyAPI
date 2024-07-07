@@ -10,8 +10,10 @@ dotenv.config();
 const PORT = process.env.PORT || 3000;
 const DATABASE_URL = process.env.DATABASE_URL;
 
-// Define allowed origins
-const allowedOrigins = ['https://thepawnsjourney.live', 'https://deploy-preview-*-thepawnsjourney.netlify.app'];
+const allowedOrigins = [
+  /^https:\/\/thepawnsjourney\.live$/,
+  /^https:\/\/deploy-preview-\d+-thepawnsjourney\.netlify\.app$/
+];
 
 // Function to check if origin is allowed
 const corsOptions = {
@@ -19,7 +21,10 @@ const corsOptions = {
     if (!origin) return callback(null, true); // Allow requests with no origin (e.g., server-to-server)
 
     // Check if origin is allowed or is localhost
-    if (allowedOrigins.includes(origin) || origin.startsWith('http://localhost')) {
+    if (
+      allowedOrigins.some(regex => regex.test(origin)) || 
+      origin.startsWith('http://localhost')
+    ) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));

@@ -5,6 +5,7 @@ const cors = require('cors');
 const app = express();
 const puzzleController = require('./controllers/puzzleController');
 const woodpeckerController = require('./controllers/woodpeckerController');
+const mainController = require('./controllers/mainController');
 
 dotenv.config();
 
@@ -32,7 +33,9 @@ const corsOptions = {
 app.use(cors(corsOptions)); // Apply CORS middleware globally
 app.use(express.json()); // Ensure the body parser middleware is included
 
-app.use('/', puzzleController);
+app.use('/', mainController);
+app.use('/puzzles', puzzleController);
+app.use('/woodpecker', woodpeckerController);
 
 // Error handling middleware
 app.use((err, req, res, next) => {

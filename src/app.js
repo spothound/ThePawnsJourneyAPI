@@ -4,6 +4,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const puzzleController = require('./controllers/puzzleController');
+const woodpeckerController = require('./controllers/woodpeckerController');
 
 dotenv.config();
 
